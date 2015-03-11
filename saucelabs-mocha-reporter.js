@@ -111,12 +111,12 @@ function printFinal(result) {
     }
     var fmt;
     if (result.passes > 0) {
-        fmt = color('checkmark', ' %d passing')
+        fmt = color('checkmark', '  %d passing')
             + color('pass', ' (%dms)');
         console.log(fmt, result.passes, totalPassTime);
     }
     if (result.failures > 0) {
-        fmt = color('fail', ' %d failing');
+        fmt = color('fail', '  %d failing');
         console.log(fmt, result.failures);
     }
 }
