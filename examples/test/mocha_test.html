@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mocha Tests</title>
+        <meta charset="utf=8">
+        <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    </head>
+    <body>
+        <div id="mocha"></div>
+        <script src="../node_modules/mocha/mocha.js"></script>
+        <script>
+          mocha.ui('bdd');
+          mocha.reporter('html');
+        </script>
+        <script id="test" src="/test/mocha_test.js"></script>
+        <script>
+            onload = function(){
+                if (window.mochaPhantomJS) {
+                    mochaPhantomJS.run();
+                } else {
+                    //mocha.checkLeaks();
+                    //mocha.globals(['foo']);
+                    var runner = mocha.run();
+
+                    var allTests = [];
+                    var failedTests = [];
+
+                    runner.on('end', function () {
+                        window.mochaResults = runner.stats;
+                        window.mochaResults.reports = failedTests;
+                        window.mochaResults.tests = allTests;
+                    });
+
+                    runner.on('pass', logTest(true, allTests));
+                    runner.on('fail', logTest(false, allTests));
+                    runner.on('fail', logTest(false, failedTests));
+
+                    function logTest(result, tests) {
+                        return function (test, err) {
+
+                            var flattenTitles = function (test) {
+                                var titles = [];
+                                while (test.parent.title) {
+                                    titles.push(test.parent.title);
+                                    test = test.parent;
+                                }
+                                return titles.reverse();
+                            };
+
+                            var testResult = {
+                                name: test.title,
+                                result: result,
+                                titles: flattenTitles(test),
+                                speed: test.speed,
+                                duration: test.duration
+                            };
+
+                            if (err) {
+                                testResult.message = err.message;
+                                testResult.stack = err.stack;
+                            }
+
+                            tests.push(testResult);
+                        };
+                    }
+                }
+            };
+        </script>
+    </body>
+</html>
