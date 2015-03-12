@@ -5,6 +5,12 @@
  */
 
 var result = {
+    "url": "https://saucelabs.com/jobs/e8ffee7c89864e5a84a1b7f9cd0bf258",
+    "platform": ["OSX 10.10", "safari", "8"],
+    "id": "e0c9411a9c4f4f85b36027c5b4d5ef8d",
+    "job_id": "e8ffee7c89864e5a84a1b7f9cd0bf258",
+    "testPageUrl": "http://localhost:9000/test/mocha_test.html",
+    "passed": true,
     "result": {
         "suites": 3,
         "tests": [{
@@ -71,4 +77,5 @@ var result = {
 
 var reporter = require('../saucelabs-mocha-reporter');
 
-reporter(result, function () { });
+reporter(result, function (err, status) {
+});

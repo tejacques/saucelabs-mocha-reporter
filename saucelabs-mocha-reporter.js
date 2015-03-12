@@ -81,6 +81,14 @@ function printPass(test) {
     }
 }
 
+function printInfo(result) {
+    console.log('  Platform  : ' + result.platform.join(' '));
+    console.log('  Report    : ' + result.url);
+    console.log('  Test Page : ' + result.testPageUrl);
+    console.log('  Passed    : ' + color(result.passed ? 'checkmark' : 'fail', result.passed));
+    console.log();
+}
+
 function printFail(test) {
     var fmt;
 
@@ -111,29 +119,42 @@ function printFinal(result) {
     }
     var fmt;
     if (result.passes > 0) {
-        fmt = color('checkmark', '  %d passing')
-            + color('pass', ' (%dms)');
-        console.log(fmt, result.passes, totalPassTime);
+        fmt = color('checkmark', '  %d passing');
+        var args = [result.passes];
+
+        if (totalPassTime > 0) {
+            fmt += color('pass', ' (%dms)');
+            args.push(totalPassTime);
+        }
+
+        console.log.apply(console, [fmt].concat(args));
     }
     if (result.failures > 0) {
         fmt = color('fail', '  %d failing');
         console.log(fmt, result.failures);
     }
+    // Newline
+    console.log();
 }
 
 var testResults;
 function onTestComplete(result, callback) {
-    if (result.result && result.result.tests && result.result.tests.length) {
-        var tests = result.result.tests;
-        for (var i = 0; i < tests.length; i++) {
-            var test = tests[i];
-            printTitles(test.titles);
-            printResult(test);
-        }
+    var res = result.result || {};
+    var tests = res.tests || res.reports || [];
+
+    // Newline
+    console.log();
+
+    printInfo(result);
+
+    for (var i = 0; i < tests.length; i++) {
+        var test = tests[i];
+        printTitles(test.titles);
+        printResult(test);
     }
 
-    printFinal(result.result);
-    callback();
+    printFinal(res);
+    callback(null, result.passed);
 }
 
 module.exports = onTestComplete;
