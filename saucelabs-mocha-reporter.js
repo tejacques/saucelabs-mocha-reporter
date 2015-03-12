@@ -82,7 +82,7 @@ function printPass(test) {
 }
 
 function printInfo(result) {
-    console.log('  Platform  : ' + result.platform.join(' '));
+    console.log('  Platform  : ' + result.platform.join(', '));
     console.log('  Report    : ' + result.url);
     console.log('  Test Page : ' + result.testPageUrl);
     console.log('  Passed    : ' + color(result.passed ? 'checkmark' : 'fail', result.passed));

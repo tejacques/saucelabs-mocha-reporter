@@ -5,11 +5,11 @@
  */
 
 var result = {
-    "url": "https://saucelabs.com/jobs/e8ffee7c89864e5a84a1b7f9cd0bf258",
-    "platform": ["OSX 10.10", "safari", "8"],
-    "id": "e0c9411a9c4f4f85b36027c5b4d5ef8d",
-    "job_id": "e8ffee7c89864e5a84a1b7f9cd0bf258",
-    "testPageUrl": "http://localhost:9000/test/mocha_test.html",
+    "url": "https://saucelabs.com/jobs/job_id",
+    "platform": ["Operating System Version", "Browser", "Version"],
+    "id": "id",
+    "job_id": "job_id",
+    "testPageUrl": "http://127.0.0.1:9000/test/mocha_test.html",
     "passed": true,
     "result": {
         "suites": 3,
@@ -40,7 +40,7 @@ var result = {
             "result": false,
             "titles": ["tested thing", "another thing"],
             "message": "Threw an error",
-            "stack": "http://localhost:9000/test/mocha_test.js:16:19"
+            "stack": "http://127.0.0.1:9000/test/mocha_test.js:16:19"
         }, {
             "name": "should pass",
             "result": true,
@@ -51,7 +51,7 @@ var result = {
             "result": false,
             "titles": ["tested thing", "yet another thing"],
             "message": "Threw an error",
-            "stack": "http://localhost:9000/test/mocha_test.js:24:19"
+            "stack": "http://127.0.0.1:9000/test/mocha_test.js:24:19"
         }],
         "passes": 8,
         "pending": 0,
@@ -64,13 +64,13 @@ var result = {
             "result": false,
             "titles": ["tested thing", "another thing"],
             "message": "expected 0 to equal 1",
-            "stack": "http://localhost:9000/test/mocha_test.js:127:26"
+            "stack": "http://127.0.0.1:9000/test/mocha_test.js:127:26"
         }, {
             "name": "should fail",
             "result": false,
             "titles": ["tested thing", "yet another thing"],
             "message": "expected 0 to equal 1",
-            "stack": "http://localhost:9000/test/mocha_test.js:134:26"
+            "stack": "http://127.0.0.1:9000/test/mocha_test.js:134:26"
         }]
     }
 };
