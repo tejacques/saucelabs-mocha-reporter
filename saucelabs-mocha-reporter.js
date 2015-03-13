@@ -100,9 +100,11 @@ function printFail(test) {
         + color('error message', '  Error: %s');
     console.log(fmt, test.message);
 
-    fmt = indent()
-        + color('error stack', '    at %s');
-    console.log(fmt, test.stack);
+    if (test.stack) {
+        fmt = indent()
+            + color('error stack', '    at %s');
+        console.log(fmt, test.stack);
+    }
 }
 
 function printResult(test) {

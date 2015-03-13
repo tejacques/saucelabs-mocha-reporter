@@ -10,7 +10,7 @@ var result = {
     "id": "id",
     "job_id": "job_id",
     "testPageUrl": "http://127.0.0.1:9000/test/mocha_test.html",
-    "passed": true,
+    "passed": false,
     "result": {
         "suites": 3,
         "tests": [{
@@ -36,6 +36,11 @@ var result = {
             "titles": ["tested thing", "another thing"],
             "speed": "fast"
         }, {
+            "name": "should fail no stacktrace",
+            "result": false,
+            "titles": ["tested thing"],
+            "message": "Threw an error"
+        }, {
             "name": "should fail",
             "result": false,
             "titles": ["tested thing", "another thing"],
@@ -60,16 +65,21 @@ var result = {
         "end": "2015-03-11T20:12:15.471Z",
         "duration": 265,
         "reports": [{
+            "name": "should fail no stacktrace",
+            "result": false,
+            "titles": ["tested thing"],
+            "message": "Threw an error"
+        }, {
             "name": "should fail",
             "result": false,
             "titles": ["tested thing", "another thing"],
-            "message": "expected 0 to equal 1",
+            "message": "Threw an error",
             "stack": "http://127.0.0.1:9000/test/mocha_test.js:127:26"
         }, {
             "name": "should fail",
             "result": false,
             "titles": ["tested thing", "yet another thing"],
-            "message": "expected 0 to equal 1",
+            "message": "Threw an error",
             "stack": "http://127.0.0.1:9000/test/mocha_test.js:134:26"
         }]
     }
@@ -77,5 +87,7 @@ var result = {
 
 var reporter = require('../saucelabs-mocha-reporter');
 
-reporter(result, function (err, status) {
+reporter.create()(result, function (err, status) {
+});
+reporter.create(true)(result, function (err, status) {
 });
