@@ -138,23 +138,27 @@ function printFinal(result) {
 }
 
 var testResults;
-function onTestComplete(result, callback) {
-    var res = result.result || {};
-    var tests = res.tests || res.reports || [];
+function create(useTests) {
+    return function onTestComplete(result, callback) {
+        var res = result.result || {};
+        var tests = useTests && res.tests || res.reports || [];
 
-    // Newline
-    console.log();
+        // Newline
+        console.log();
 
-    printInfo(result);
+        printInfo(result);
 
-    for (var i = 0; i < tests.length; i++) {
-        var test = tests[i];
-        printTitles(test.titles);
-        printResult(test);
-    }
+        for (var i = 0; i < tests.length; i++) {
+            var test = tests[i];
+            printTitles(test.titles);
+            printResult(test);
+        }
 
-    printFinal(res);
-    callback(null, result.passed);
+        printFinal(res);
+        callback(null, result.passed);
+    };
 }
 
-module.exports = onTestComplete;
+module.exports = {
+    create: create
+};
