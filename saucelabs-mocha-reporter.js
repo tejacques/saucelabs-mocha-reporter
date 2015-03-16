@@ -141,6 +141,9 @@ function create(useTests) {
         var res = result.result || {};
         var tests = useTests && res.tests || res.reports || [];
 
+        // reset lastTitles
+        lastTitles = [];
+
         // Clone tests
         tests = tests.slice();
 
