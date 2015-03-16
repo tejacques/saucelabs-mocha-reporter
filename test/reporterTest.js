@@ -31,15 +31,21 @@ var result = {
             "speed": "slow",
             "duration": 200
         }, {
-            "name": "should pass",
-            "result": true,
-            "titles": ["tested thing", "another thing"],
-            "speed": "fast"
+            "name": "should fail",
+            "result": false,
+            "titles": ["tested thing"],
+            "message": "Threw an error",
+            "stack": "http://127.0.0.1:9000/test/mocha_test.js:134:26"
         }, {
             "name": "should fail no stacktrace",
             "result": false,
             "titles": ["tested thing"],
             "message": "Threw an error"
+        }, {
+            "name": "should pass",
+            "result": true,
+            "titles": ["tested thing", "another thing"],
+            "speed": "fast"
         }, {
             "name": "should fail",
             "result": false,
@@ -65,6 +71,12 @@ var result = {
         "end": "2015-03-11T20:12:15.471Z",
         "duration": 265,
         "reports": [{
+            "name": "should fail",
+            "result": false,
+            "titles": ["tested thing"],
+            "message": "Threw an error",
+            "stack": "http://127.0.0.1:9000/test/mocha_test.js:134:26"
+        }, {
             "name": "should fail no stacktrace",
             "result": false,
             "titles": ["tested thing"],

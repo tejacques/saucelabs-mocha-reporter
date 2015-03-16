@@ -41,109 +41,114 @@ if ('win32' == process.platform) {
     symbols.fail = '\u00D7';
 }
 
-var depth = 0;
-function indent() {
-    return Array(depth+2).join('  ');
-}
 
-var lastTitles = [];
-function printTitles(titles) {
-    // Print if the titles at an index are different
-    for (var i = 0; i < titles.length; i++) {
-        var title = titles[i];
-        var lastTitle = lastTitles[i];
-        depth = i;
-        if (title !== lastTitle) {
-            console.log(indent() + color('suite', '%s'), title);
+function create(useTests) {
+    var depth = 0;
+    function indent() {
+        return Array(depth + 2).join('  ');
+    }
+
+    var lastTitles = [];
+    function printTitles(titles) {
+        // Print if the titles at an index are different
+        for (var i = 0; i < titles.length; i++) {
+            var title = titles[i];
+            var lastTitle = lastTitles[i];
+            depth = i;
+            if (title !== lastTitle) {
+                console.log(indent() + color('suite', '%s'), title);
+            }
+        }
+        lastTitles = titles;
+        depth = titles.length;
+    }
+
+    var totalPassTime = 0;
+    function printPass(test) {
+        var fmt;
+        if ('fast' == test.speed) {
+            fmt = indent()
+              + color('checkmark', symbols.pass)
+              + color('pass', ' %s ');
+            console.log(fmt, test.name);
+        } else {
+            fmt = indent()
+              + color('checkmark', symbols.pass)
+              + color('pass', ' %s ')
+              + color(test.speed, '(%dms)');
+            console.log(fmt, test.name, test.duration);
+        }
+        if (test.duration > 0) {
+            totalPassTime += test.duration;
         }
     }
-    lastTitles = titles;
-    depth = titles.length;
-}
 
-var totalPassTime = 0;
-function printPass(test) {
-    var fmt;
-    if ('fast' == test.speed) {
-        fmt = indent()
-          + color('checkmark', symbols.pass)
-          + color('pass', ' %s ');
-        console.log(fmt, test.name);
-    } else {
-        fmt = indent()
-          + color('checkmark', symbols.pass)
-          + color('pass', ' %s ')
-          + color(test.speed, '(%dms)');
-        console.log(fmt, test.name, test.duration);
-    }
-    if (test.duration > 0) {
-        totalPassTime += test.duration;
-    }
-}
-
-function printInfo(result) {
-    console.log('  Platform  : ' + result.platform.join(', '));
-    console.log('  Report    : ' + result.url);
-    console.log('  Test Page : ' + result.testPageUrl);
-    console.log('  Passed    : ' + color(result.passed ? 'checkmark' : 'fail', result.passed));
-    console.log();
-}
-
-function printFail(test) {
-    var fmt;
-
-    fmt = indent()
-        + color('fail', symbols.fail + ' %s');
-    console.log(fmt, test.name);
-
-    fmt = indent()
-        + color('error message', '  Error: %s');
-    console.log(fmt, test.message);
-
-    if (test.stack) {
-        fmt = indent()
-            + color('error stack', '    at %s');
-        console.log(fmt, test.stack);
-    }
-}
-
-function printResult(test) {
-    if (test.result) {
-        printPass(test);
-    } else {
-        printFail(test);
-    }
-}
-
-function printFinal(result) {
-    if (result.passes + result.failures + result.pending > 0) {
+    function printInfo(result) {
+        console.log('  Platform  : ' + result.platform.join(', '));
+        console.log('  Report    : ' + result.url);
+        console.log('  Test Page : ' + result.testPageUrl);
+        console.log('  Passed    : ' + color(result.passed ? 'checkmark' : 'fail', result.passed));
         console.log();
     }
-    var fmt;
-    if (result.passes > 0) {
-        fmt = color('checkmark', '  %d passing');
-        var args = [result.passes];
 
-        if (totalPassTime > 0) {
-            fmt += color('pass', ' (%dms)');
-            args.push(totalPassTime);
+    function printFail(test) {
+        var fmt;
+
+        fmt = indent()
+            + color('fail', symbols.fail + ' %s');
+        console.log(fmt, test.name);
+
+        fmt = indent()
+            + color('error message', '  Error: %s');
+        console.log(fmt, test.message);
+
+        if (test.stack) {
+            fmt = indent()
+                + color('error stack', '    at %s');
+            console.log(fmt, test.stack);
         }
-
-        console.log.apply(console, [fmt].concat(args));
     }
-    if (result.failures > 0) {
-        fmt = color('fail', '  %d failing');
-        console.log(fmt, result.failures);
-    }
-    // Newline
-    console.log();
-}
 
-var testResults;
-function create(useTests) {
+    function printResult(test) {
+        if (test.result) {
+            printPass(test);
+        } else {
+            printFail(test);
+        }
+    }
+
+    function printFinal(result) {
+        if (result.passes + result.failures + result.pending > 0) {
+            console.log();
+        }
+        var fmt;
+        if (result.passes > 0) {
+            fmt = color('checkmark', '  %d passing');
+            var args = [result.passes];
+
+            if (totalPassTime > 0) {
+                fmt += color('pass', ' (%dms)');
+                args.push(totalPassTime);
+            }
+
+            console.log.apply(console, [fmt].concat(args));
+        }
+        if (result.failures > 0) {
+            fmt = color('fail', '  %d failing');
+            console.log(fmt, result.failures);
+        }
+        // Newline
+        console.log();
+    }
+
+    var testResults;
+
     return function onTestComplete(result, callback) {
         var res = result.result || {};
         var tests = useTests && res.tests || res.reports || [];
+
+        // Clone tests
+        tests = tests.slice();
 
         // Newline
         console.log();
