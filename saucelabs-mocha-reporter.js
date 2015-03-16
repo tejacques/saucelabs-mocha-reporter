@@ -63,7 +63,6 @@ function create(useTests) {
         depth = titles.length;
     }
 
-    var totalPassTime = 0;
     function printPass(test) {
         var fmt;
         if ('fast' == test.speed) {
@@ -77,9 +76,6 @@ function create(useTests) {
               + color('pass', ' %s ')
               + color(test.speed, '(%dms)');
             console.log(fmt, test.name, test.duration);
-        }
-        if (test.duration > 0) {
-            totalPassTime += test.duration;
         }
     }
 
@@ -126,9 +122,9 @@ function create(useTests) {
             fmt = color('checkmark', '  %d passing');
             var args = [result.passes];
 
-            if (totalPassTime > 0) {
+            if (result.duration > 0) {
                 fmt += color('pass', ' (%dms)');
-                args.push(totalPassTime);
+                args.push(result.duration);
             }
 
             console.log.apply(console, [fmt].concat(args));
@@ -140,8 +136,6 @@ function create(useTests) {
         // Newline
         console.log();
     }
-
-    var testResults;
 
     return function onTestComplete(result, callback) {
         var res = result.result || {};
