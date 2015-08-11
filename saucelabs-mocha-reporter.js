@@ -80,8 +80,8 @@ function create(useTests) {
     }
 
     function printInfo(result) {
-        console.log('  Platform  : ' + result.platform.join(', '));
-        console.log('  Report    : ' + result.url);
+        console.log('  Platform  : ' + (result.platform || ['Error']).join(', '));
+        console.log('  Report    : ' + (result.url || result.status));
         console.log('  Test Page : ' + result.testPageUrl);
         console.log('  Passed    : ' + color(result.passed ? 'checkmark' : 'fail', result.passed));
         console.log();
