@@ -1,6 +1,6 @@
 {
   "name": "saucelabs-mocha-reporter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Provides a spec reporter for mocha tests on sauce labs",
   "main": "saucelabs-mocha-reporter.js",
   "scripts": {
